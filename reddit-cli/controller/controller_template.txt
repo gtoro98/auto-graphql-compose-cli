@@ -1,0 +1,16 @@
+import { ${Component}TC } from "./${component}.model";
+
+const ${component}Queries = {
+  ${component}: ${Component}TC.mongooseResolvers.findOne(),
+  ${component}s: ${Component}TC.mongooseResolvers.findMany({
+    limit: { defaultValue: 1000000 },
+  }),
+  ${component}Pagination: ${Component}TC.mongooseResolvers.pagination(),
+};
+
+const ${component}Mutations = {
+  create${Component}: ${Component}TC.mongooseResolvers.createOne(),
+  update${Component}: ${Component}TC.mongooseResolvers.updateOne(),
+};
+
+export { ${component}Queries, ${component}Mutations };

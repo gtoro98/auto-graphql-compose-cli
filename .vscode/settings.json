@@ -1,0 +1,182 @@
+
+    {
+        "editor.inlineSuggest.enabled": true,
+        "editor.accessibilitySupport": "off",
+        "editor.formatOnPaste": true,
+        "editor.cursorStyle": "line",
+        "editor.find.seedSearchStringFromSelection": "always",
+        "editor.renderWhitespace": "all",
+        "prettier.singleQuote": true,
+        "editor.colorDecorators": false,
+        "prettier.semi": true,
+        "editor.showFoldingControls": "always",
+        "editor.useTabStops": true,
+        "editor.guides.bracketPairs": true,
+        "workbench.editor.enablePreviewFromQuickOpen": false,
+        "editor.codeActionsOnSave": {
+          "source.fixAll": true
+        },
+        "typescript.updateImportsOnFileMove.enabled": "always",
+        "editor.cursorBlinking": "solid",
+        "editor.minimap.showSlider": "always",
+        "[javascriptreact]": {
+          "editor.autoClosingQuotes": "always",
+          "editor.autoIndent": "full",
+          "editor.autoClosingOvertype": "always",
+          "editor.autoSurround": "quotes",
+          "editor.autoClosingBrackets": "always",
+          "editor.autoClosingDelete": "always",
+          "editor.formatOnSave": false
+        },
+        "notebook.cellToolbarLocation": {
+          "default": "right",
+          "jupyter-notebook": "left"
+        },
+        "eslint.alwaysShowStatus": true,
+        "[json]": {
+          "editor.defaultFormatter": "esbenp.prettier-vscode"
+        },
+        "window.openFilesInNewWindow": "off",
+        "workbench.startupEditor": "newUntitledFile",
+        "prettier.bracketSpacing": true,
+        "eslint.format.enable": true,
+        "editor.rulers": [80, 100],
+        "files.insertFinalNewline": true,
+        "workbench.settings.editor": "json",
+        "html.format.preserveNewLines": true,
+        "editor.bracketPairColorization.enabled": true,
+        "files.autoSaveDelay": 3000,
+        "git.autofetch": true,
+        "prettier.trailingComma": "es5",
+        "[javascript]": {
+          "editor.autoClosingQuotes": "always",
+          "editor.autoIndent": "full",
+          "editor.autoClosingOvertype": "always",
+          "editor.autoSurround": "quotes",
+          "editor.autoClosingBrackets": "always",
+          "editor.autoClosingDelete": "always",
+          "editor.formatOnSave": false
+        },
+        "editor.fontSize": 18,
+        "workbench.editorAssociations": {
+          "*.ipynb": "jupyter-notebook"
+        },
+        "workbench.editor.tabSizing": "shrink",
+        "editor.letterSpacing": 0.5,
+        "typescript.tsserver.log": "off",
+        "js/ts.implicitProjectConfig.checkJs": true,
+        "workbench.iconTheme": "material-icon-theme",
+        "editor.cursorWidth": 5,
+        "editor.detectIndentation": false,
+        "cSpell.userWords": [
+          "avilatek",
+          "backend",
+          "camo",
+          "destructure",
+          "gmail",
+          "injectable",
+          "lightgrey",
+          "minmax",
+          "nprogress",
+          "prefetch",
+          "promisify",
+          "reactstrap",
+          "refetch",
+          "Signin",
+          "Signout",
+          "SIGNUP",
+          "Swal",
+          "Templating",
+          "TLDR",
+          "wesbos",
+          "Swal"
+        ],
+        "editor.fontLigatures": true,
+        "editor.tabSize": 2,
+        "liveServer.settings.donotShowInfoMsg": true,
+        "editor.linkedEditing": true,
+        "workbench.colorTheme": "Min Dark",
+        "editor.scrollBeyondLastLine": true,
+        "editor.matchBrackets": "always",
+        "extensions.ignoreRecommendations": false,
+        "files.autoSave": "afterDelay",
+        "[typescript]": {
+          "editor.autoSurround": "quotes",
+          "editor.autoClosingDelete": "always",
+          "editor.autoClosingOvertype": "always",
+          "editor.autoClosingQuotes": "always",
+          "editor.autoIndent": "full",
+          "editor.autoClosingBrackets": "always"
+        },
+        "emmet.includeLanguages": {
+          "javascript": "javascriptreact"
+        },
+        "window.title": "${dirty} ${activeEditorMedium}${separator}${rootName}",
+        "editor.formatOnSave": true,
+        "html.format.enable": true,
+        "editor.wordWrap": "on",
+        "workbench.editor.enablePreview": true,
+        "editor.fontFamily": "Fira Code, Menlo, Monaco, 'Courier New', monospace",
+        "editor.snippetSuggestions": "top",
+        "editor.lineHeight": 25,
+        "[typescriptreact]": {
+          "editor.autoSurround": "quotes",
+          "editor.autoClosingDelete": "always",
+          "editor.autoClosingOvertype": "always",
+          "editor.autoClosingQuotes": "always",
+          "editor.autoIndent": "full",
+          "editor.autoClosingBrackets": "always"
+        },
+        "editor.autoIndent": "full",
+        "cSpell.language": "en,es",
+        "files.trimTrailingWhitespace": true,
+        "editor.suggestSelection": "first",
+        "editor.defaultFormatter": "esbenp.prettier-vscode",
+        "editor.quickSuggestionsDelay": 30,
+        "files.exclude": {
+          "**/.hg": true,
+          "**/CVS": true,
+          "**/.DS_Store": true,
+          "**/node_modules": true,
+          "**/.git": true,
+          "**/.svn": true
+          // "**/.next": true
+        },
+        "editor.minimap.enabled": false,
+        "prettier.tabWidth": 2,
+        "javascript.updateImportsOnFileMove.enabled": "always",
+        "editor.multiCursorModifier": "ctrlCmd",
+        "prettier.printWidth": 80,
+        "eslint.codeAction.showDocumentation": {
+          "enable": true
+        },
+        "prettier.useTabs": false,
+        "editor.fontWeight": "400",
+        "window.closeWhenEmpty": true,
+        "vsintellicode.modify.editor.suggestSelection": "automaticallyOverrodeDefaultValue",
+        "[html]": {
+          "editor.defaultFormatter": "vscode.html-language-features"
+        },
+        "terminal.integrated.env.osx": {
+          "FIG_NEW_SESSION": "1"
+        },
+        "github.copilot.enable": {
+          "*": true,
+          "yaml": false,
+          "plaintext": false,
+          "markdown": false,
+          "python": false
+        },
+        "security.workspace.trust.untrustedFiles": "open",
+        "[sql]": {
+          "editor.defaultFormatter": "adpyke.vscode-sql-formatter"
+        },
+        "window.commandCenter": true,
+        "githubPullRequests.pullBranch": "never",
+        "editor.maxTokenizationLineLength": 80000,
+        "editor.unicodeHighlight.ambiguousCharacters": false,
+        "npm.keybindingsChangedWarningShown": true,
+        "editor.stickyScroll.enabled": true,
+        "window.zoomLevel": -1
+      }
+      

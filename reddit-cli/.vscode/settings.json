@@ -1,0 +1,18 @@
+{
+  "editor.inlineSuggest.enabled": true,
+  "editor.accessibilitySupport": "off",
+  "editor.formatOnPaste": true,
+  "editor.cursorStyle": "line",
+  "editor.find.seedSearchStringFromSelection": "always",
+  "editor.renderWhitespace": "all",
+  "prettier.singleQuote": true,
+  "editor.colorDecorators": false,
+  "prettier.semi": true,
+  "editor.showFoldingControls": "always",
+  "editor.useTabStops": true,
+  "editor.guides.bracketPairs": true,
+  "workbench.editor.enablePreviewFromQuickOpen": false,
+  "editor.codeActionsOnSave": {
+    "source.fixAll": true
+  }
+}
