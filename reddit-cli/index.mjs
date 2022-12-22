@@ -9,19 +9,22 @@ import { createDto } from './dto/dto.mjs';
 const { argv } = yargs(process.argv);
 const model = [];
 try {
-  let input = await readFile(process.cwd() + '/table_model.txt', 'utf-8');
-  input = input.split('\n');
+  let file = await readFile(process.cwd() + '/table_model.txt', 'utf-8');
+  let input = file.split('\n');
 
   let component = input.shift().split(' ')[1];
 
   for (let i = 0; i < input.length; i++) {
+    let line = input[i].trim().split(' ')
+
     let attribute = {
-      name: input[i].trim().split(' ')[0],
-      type: input[i].trim().split(' ')[1],
+      name: line.shift(),
+      type: line.shift(),
+      rest: line.join(),
     };
     model.push(attribute);
   }
-  //console.log(data2);
+  console.log(model);
   const data = {
     component: component,
   };

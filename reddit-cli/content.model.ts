@@ -13,7 +13,6 @@ export interface IContent {
   creator: Types.ObjectId | IUser;
   active: boolean;
   createdAt: Date;
-  updatedAt: Date;
 }
 
 export type ContentDocument = Document<Types.ObjectId, any, IContent> &
@@ -22,12 +21,12 @@ export type ContentDocument = Document<Types.ObjectId, any, IContent> &
 
 const contentSchema = new Schema<IContent>(
   {
-    title: { 
-      type: String, 
+    title: {
+      type: String,
       trim: true
     },
-    description: { 
-      type: String, 
+    description: {
+      type: String,
       trim: true
     },
     isPrivate: {
@@ -47,18 +46,18 @@ const contentSchema = new Schema<IContent>(
   );
 
 
-export const Content = 
+export const Content =
   (models.Content as Model<ContentDocument> & {
     SyncToAlgolia?: any;
-    SyncAlgoliaSettings?: any; 
+    SyncAlgoliaSettings?: any;
 }) ||
   model<
   ContentDocument,
   Model<ContentDocument> & {
     SyncToAlgolia?: any;
-    SyncAlgoliaSettings?: any; 
+    SyncAlgoliaSettings?: any;
     }
   >('Content', contentSchema);
-  
+
 export const ContentTC = composeMongoose(Content);
 
