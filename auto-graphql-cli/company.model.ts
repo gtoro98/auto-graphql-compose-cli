@@ -26,28 +26,28 @@ export type CompanyDocument = Document<Types.ObjectId, any, ICompany> &
 
 const companySchema = new Schema<ICompany>(
   {
-    name: {
-      type: String,
-      trim: true
-    },
-    description: {
-      type: String,
-      trim: true
-    },
-    logo: multimediaSchema,
-    category: {
-      type: Schema.Types.ObjectId,
-      ref: 'Category'
-    },
-    subcategory: [{
-      type: Schema.Types.ObjectId,
-      ref: 'Subcategory'
-    }],
-    addresses: [addressSchema],
-    active: [{
-      type: Boolean,
-      default: true
-    }],
+  name: {
+    type: String,
+    trim: true
+  },
+  description: {
+    type: String,
+    trim: true
+  },
+  logo: multimediaSchema,
+  category: {
+    type: Schema.Types.ObjectId,
+    ref: 'Category'
+  },
+  subcategory: [{
+    type: Schema.Types.ObjectId,
+    ref: 'Subcategory'
+  }],
+  addresses: [addressSchema],
+  active: {
+    type: Boolean,
+    default: true
+  },
   },
   { timestamps: true }
   );

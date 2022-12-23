@@ -10,9 +10,9 @@ export async function createModel(model, component) {
       new URL('model_template.ts', import.meta.url),
       'utf-8'
     );
-    addInterface(model, component);
+    addAttributes(model, component);
     addDocument(component);
-    addSchema(model, component);
+    //addSchema(model, component);
     addTC(component);
 
     await writeFile(
@@ -23,17 +23,26 @@ export async function createModel(model, component) {
     console.log(err);
   }
 }
-
-function addInterface(model, component) {
+function addAttributes(model, component) {
   let I = `export interface I${component} {\n`;
+  let S = `const ${component.toLowerCase()}Schema = new Schema<I${component}>(\n  {`;
+
   for (let x = 0; x < model.length; x++) {
-    I = I + addInterfaceAtribute(model[x]);
+    I = I + addInterfaceAttribute(model[x]);
+    S = S + addSchemaAttribute(model[x]);
   }
   I = I + '}';
+  S =
+    S +
+    `
+  },
+  { timestamps: true }
+  );`;
+  template = template.replace('${Schema}', S);
   template = template.replace('${Interface}', I);
 }
 
-function addInterfaceAtribute(attribute) {
+function addInterfaceAttribute(attribute) {
   let isArray = '';
   let isArrayClose = '';
   //console.log(attribute);
@@ -94,83 +103,59 @@ function addDocument(component) {
   template = template.replace('${Document}', D);
 }
 
-function addSchema(model, component) {
-  let S = `const ${component.toLowerCase()}Schema = new Schema<I${component}>(\n  {`;
+function addSchemaAttribute(attribute) {
   let isArray = '';
   let isArrayClose = '';
-  for (let attribute of model) {
-    if(attribute['type'] == undefined || attribute['type'] == null){
-      continue;
+  if (attribute['type'] == undefined || attribute['type'] == null) {
+    return ''
+  }
+  if (attribute['type'].includes('[]') || attribute['rest'].includes('>')) {
+    isArray = '[';
+    isArrayClose = ']';
+  }
+  switch (attribute['type']) {
+    case 'ObjectId': {
+      return '';
     }
-    if (attribute['type'].includes('[]') || attribute['rest'].includes('>')) {
-      isArray = '[';
-      isArrayClose = ']';
+    case undefined: {
+      return '';
     }
-    switch (attribute['type']) {
-      case 'ObjectId': {
-        break;
+    case 'String': {
+      return `
+  ${attribute['name']}: ${isArray}{
+    type: ${attribute['type']},
+    trim: true
+  }${isArrayClose},`;
+    }
+    case 'Boolean': {
+      return `
+  ${attribute['name']}: ${isArray}{
+    type: ${attribute['type']},
+    default: true
+  }${isArrayClose},`;
+    }
+    case 'Date': {
+      return '';
+    }
+    default: {
+      if (attribute['rest'].includes('embed')) {
+        template = addImport(
+          attribute['type'].toLowerCase() + 'Schema',
+          `../${attribute['type'].toLowerCase()}`,
+          template
+        );
+        return `
+  ${attribute['name']}: ${isArray}${attribute['type']
+            .replace('[]', '')
+            .toLowerCase()}Schema${isArrayClose},`;
       }
-      case undefined: {
-        break;
-      }
-      case 'String': {
-        S =
-          S +
-          `
-    ${attribute['name']}: ${isArray}{
-      type: ${attribute['type']},
-      trim: true
-    }${isArrayClose},`;
-        break;
-      }
-      case 'Boolean': {
-        S =
-          S +
-          `
-    ${attribute['name']}: ${isArray}{
-      type: ${attribute['type']},
-      default: true
-    }${isArrayClose},`;
-        break;
-      }
-      case 'Date': {
-        break;
-      }
-      default: {
-        if(attribute['rest'].includes('embed')){
-          template = addImport(
-             attribute['type'].toLowerCase()+'Schema',
-            `../${attribute['type']
-              .toLowerCase()}`,
-            template
-          );
-          S =
-            S +
-            `
-    ${attribute['name']}: ${isArray}${attribute['type']
-              .replace('[]', '')
-              .toLowerCase()}Schema${isArrayClose},`;
-          break;
-        }
-        S =
-          S +
-          `
-    ${attribute['name']}: ${isArray}{
-      type: Schema.Types.ObjectId,
-      ref: '${attribute['type'].replace('[]', '')}'
-    }${isArrayClose},`;
-        break;
-      }
+      return `
+  ${attribute['name']}: ${isArray}{
+    type: Schema.Types.ObjectId,
+    ref: '${attribute['type'].replace('[]', '')}'
+  }${isArrayClose},`;
     }
   }
-
-  S =
-    S +
-    `
-  },
-  { timestamps: true }
-  );`;
-  template = template.replace('${Schema}', S);
 }
 
 function addTC(component) {
