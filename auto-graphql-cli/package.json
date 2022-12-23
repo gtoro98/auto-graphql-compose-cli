@@ -4,7 +4,7 @@
   "main": "index.mjs",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "node index.mjs"
+    "start": "node src/index.mjs"
   },
   "author": "",
   "license": "ISC",
@@ -15,6 +15,6 @@
   },
   "description": "",
   "bin": {
-    "auto": "index.mjs"
+    "auto": "src/index.mjs"
   }
 }

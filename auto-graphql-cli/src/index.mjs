@@ -5,6 +5,7 @@ import { readFile, writeFile } from 'fs/promises';
 import { createModel } from './model/model.mjs';
 import { createService } from './service/service.mjs';
 import { createDto } from './dto/dto.mjs';
+import { createIndex } from './index/index.mjs';
 
 const { argv } = yargs(process.argv);
 const model = [];
@@ -50,6 +51,7 @@ try {
   createController(component);
   createService(component);
   createDto(component);
+  createIndex(component);
 } catch (err) {
   console.log(err);
 }

@@ -1,0 +1,12 @@
+Table Content {
+  _id ObjectId [pk]
+  title String
+  description String [note: "WYSIWYG"]
+  isPrivate Boolean
+  creator User [ref: - User._id]
+  category Category [ref: - Category._id]
+  subcategory Subcategory [ref: - Subcategory._id]
+  active Boolean
+  createdAt Date
+  updatedAt Date
+}

@@ -10,3 +10,5 @@ ${Document}
 ${Schema}
 
 ${TC}
+
+${Relations}

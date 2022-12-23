@@ -3,6 +3,7 @@ import { readFile, writeFile } from 'fs/promises';
 import { addImport } from '../import/import.mjs';
 
 var template;
+var relations = '';
 
 export async function createModel(model, component) {
   try {
@@ -28,7 +29,7 @@ function addAttributes(model, component) {
   let S = `const ${component.toLowerCase()}Schema = new Schema<I${component}>(\n  {`;
 
   for (let x = 0; x < model.length; x++) {
-    I = I + addInterfaceAttribute(model[x]);
+    I = I + addInterfaceAttribute(model[x], component);
     S = S + addSchemaAttribute(model[x]);
   }
   I = I + '}';
@@ -40,14 +41,15 @@ function addAttributes(model, component) {
   );`;
   template = template.replace('${Schema}', S);
   template = template.replace('${Interface}', I);
+  template = template.replace('${Relations}', relations);
 }
 
-function addInterfaceAttribute(attribute) {
+function addInterfaceAttribute(attribute, component) {
   let isArray = '';
   let isArrayClose = '';
   //console.log(attribute);
   if (attribute['type'] == undefined || attribute['type'] == null) {
-    return'';
+    return '';
   }
   if(attribute['type'].includes('[]') || attribute['rest'].includes('>')){
     isArray = 'Array<';
@@ -82,6 +84,12 @@ function addInterfaceAttribute(attribute) {
       );
       if(attribute['rest'].includes('embed')){
         notEmbeded = '';
+      }else{
+        if(isArray === ''){
+          addRelation(attribute, component);
+        }else {
+          addRelations(attribute, component);
+        }
       }
       return (
         '  ' +
@@ -176,4 +184,45 @@ export const ${component} =
 export const ${component}TC = composeMongoose(${component});`;
 
   template = template.replace('${TC}', TC);
+}
+
+function addRelation(attribute, component) {
+  template = addImport(
+    attribute['type'] + 'TC',
+    `../${attribute['type'].toLowerCase()}`,
+    template
+  );
+
+  relations =
+    relations +
+    `
+${component}TC.addRelation('${attribute['name']}', {
+  resolver: ${attribute['type']}TC.mongooseResolvers.dataLoader(),
+  prepareArgs: {
+    _ids: (source) => source.${attribute['name']},
+  },
+  projection: {
+    ${attribute['name']}: 1,
+  },
+});`;
+}
+function addRelations(attribute, component) {
+  template = addImport(
+    attribute['type'] + 'TC',
+    `../${attribute['type'].toLowerCase()}`,
+    template
+  );
+
+  relations =
+    relations +
+    `
+${component}TC.addRelation('${attribute['name']}s', {
+  resolver: ${attribute['type']}TC.mongooseResolvers.dataLoaderMany(),
+  prepareArgs: {
+    _ids: (source) => source.${attribute['name']}s,
+  },
+  projection: {
+    ${attribute['name']}s: 1,
+  },
+});`;
 }
