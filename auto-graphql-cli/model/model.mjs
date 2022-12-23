@@ -12,6 +12,7 @@ export async function createModel(model, component) {
     );
     addInterface(model, component);
     addDocument(component);
+    console.log(model);
     addSchema(model, component);
     addTC(component);
 
@@ -26,8 +27,7 @@ export async function createModel(model, component) {
 
 function addInterface(model, component) {
   let I = `export interface I${component} {\n`;
-  for (let x = 0; x < model.length - 2; x++) {
-    console.log(model[x]);
+  for (let x = 0; x < model.length; x++) {
     I = I + addInterfaceAtribute(model[x]);
   }
   I = I + '}';
@@ -35,8 +35,15 @@ function addInterface(model, component) {
 }
 
 function addInterfaceAtribute(attribute) {
+  let isArray = '';
+  let isArrayClose = '';
+  console.log(attribute);
   if (attribute['type'] == undefined || attribute['type'] == null) {
     return'';
+  }
+  if(attribute['type'].includes('[]') || attribute['rest'].includes('>')){
+    isArray = 'Array<';
+    isArrayClose = '>';
   }
   if (
     attribute['type'].trim() == 'String' ||
@@ -44,18 +51,24 @@ function addInterfaceAtribute(attribute) {
     attribute['type'].trim() == 'Boolean'
   ) {
     return (
-      '  ' + attribute['name'] + ': ' + attribute['type'].toLowerCase() + ';\n'
+      '  ' +
+      attribute['name'] +
+      ': ' +
+      isArray +
+      attribute['type'].toLowerCase() +
+      isArrayClose +
+      ';\n'
     );
   }
   switch (attribute['type']) {
     case 'ObjectId':
       return '  ' + attribute['name'] + ': any;\n';
     case 'Date':
-      return '  ' + attribute['name'] + ': Date;\n';
+      return '  ' + attribute['name'] + ':' + isArray + 'Date'+ isArrayClose + ';\n';
     default:
       template = addImport(
-        'I' + attribute['type'],
-        `../${attribute['type'].toLowerCase()}/${attribute[
+        'I' + attribute['type'].replace('[]', ''),
+        `../${attribute['type'].replace('[]', '').toLowerCase()}/${attribute[
           'type'
         ].toLowerCase()}.model`,
         template
@@ -63,8 +76,11 @@ function addInterfaceAtribute(attribute) {
       return (
         '  ' +
         attribute['name'] +
-        ': Types.ObjectId | I' +
-        attribute['type'] +
+        ': ' +
+        isArray +
+        'Types.ObjectId | I' +
+        attribute['type'].replace('[]', '') +
+        isArrayClose +
         ';\n'
       );
   }
@@ -79,8 +95,18 @@ function addDocument(component) {
 
 function addSchema(model, component) {
   let S = `const ${component.toLowerCase()}Schema = new Schema<I${component}>(\n  {`;
-
+  let isArray = '';
+  let isArrayClose = '';
   for (let attribute of model) {
+    if(attribute['type'] == undefined || attribute['type'] == null){
+      continue;
+    }
+    console.log(attribute['type'])
+    if (attribute['type'].includes('[]') || attribute['rest'].includes('>')) {
+      isArray = '[';
+      isArrayClose = ']';
+    }
+    console.log(isArray)
     switch (attribute['type']) {
       case 'ObjectId': {
         break;
@@ -92,20 +118,20 @@ function addSchema(model, component) {
         S =
           S +
           `
-    ${attribute['name']}: {
+    ${attribute['name']}: ${isArray}{
       type: ${attribute['type']},
       trim: true
-    },`;
+    }${isArrayClose},`;
         break;
       }
       case 'Boolean': {
         S =
           S +
           `
-    ${attribute['name']}: {
+    ${attribute['name']}: ${isArray}{
       type: ${attribute['type']},
       default: true
-    },`;
+    }${isArrayClose},`;
         break;
       }
       case 'Date': {
@@ -115,10 +141,10 @@ function addSchema(model, component) {
         S =
           S +
           `
-    ${attribute['name']}: {
+    ${attribute['name']}: ${isArray}{
       type: Schema.Types.ObjectId,
-      ref: '${attribute['type']}'
-    },`;
+      ref: '${attribute['type'].replace('[]', '')}'
+    }${isArrayClose},`;
         break;
       }
     }

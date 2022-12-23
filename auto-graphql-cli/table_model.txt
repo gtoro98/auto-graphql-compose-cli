@@ -1,0 +1,12 @@
+Table Company {
+  _id ObjectId [pk]
+  name String
+  description String
+  logo Multimedia [ref: - Multimedia._id, note: "embed"]
+  category Category [ref: - Category._id]
+  subcategory Subcategory [ref: > Subcategory._id]
+  addresses "Address[]" [note: "embed"]
+  active Boolean
+  createdAt Date
+  updatedAt Date
+}

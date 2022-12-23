@@ -1,5 +1,5 @@
 export function addImport(item, path, template) {
-  const statement = `import { ${item} } from '${path}';\n`;
+  const statement = `import { ${item} } from '${path.replace('[]', '')}';`;
   template = template.split('\n');
 
   for (let element of template) {
@@ -15,7 +15,7 @@ export function addImport(item, path, template) {
     }
   }
   template.unshift(statement);
-  console.log(template);
+
   return unSplitTemplate(template);
 }
 

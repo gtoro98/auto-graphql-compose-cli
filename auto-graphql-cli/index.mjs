@@ -16,15 +16,21 @@ try {
 
   for (let i = 0; i < input.length; i++) {
     let line = input[i].trim().split(' ')
-
-    let attribute = {
-      name: line.shift(),
-      type: line.shift(),
-      rest: line.join(),
-    };
+    if(line.length >= 3){{
+      let attribute = {
+        name: line.shift().replace(/[^0-9a-z[-]]/gi, ''),
+        type: line
+          .shift()
+          .replace(/[^0-9a-z[-]]/gi, '')
+          .replace(/['"]+/g, ''),
+        rest: line.join(),
+      };
     model.push(attribute);
+    }
   }
-  console.log(model);
+
+  }
+  //console.log(model);
   const data = {
     component: component,
   };
