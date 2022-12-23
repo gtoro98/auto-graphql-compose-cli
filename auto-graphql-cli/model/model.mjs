@@ -12,7 +12,6 @@ export async function createModel(model, component) {
     );
     addInterface(model, component);
     addDocument(component);
-    console.log(model);
     addSchema(model, component);
     addTC(component);
 
@@ -37,7 +36,7 @@ function addInterface(model, component) {
 function addInterfaceAtribute(attribute) {
   let isArray = '';
   let isArrayClose = '';
-  console.log(attribute);
+  //console.log(attribute);
   if (attribute['type'] == undefined || attribute['type'] == null) {
     return'';
   }
@@ -64,22 +63,24 @@ function addInterfaceAtribute(attribute) {
     case 'ObjectId':
       return '  ' + attribute['name'] + ': any;\n';
     case 'Date':
-      return '  ' + attribute['name'] + ':' + isArray + 'Date'+ isArrayClose + ';\n';
+      return '  ' + attribute['name'] + ': ' + isArray + 'Date'+ isArrayClose + ';\n';
     default:
+      let notEmbeded = 'Types.ObjectId | ';
       template = addImport(
-        'I' + attribute['type'].replace('[]', ''),
-        `../${attribute['type'].replace('[]', '').toLowerCase()}/${attribute[
-          'type'
-        ].toLowerCase()}.model`,
+        'I' + attribute['type'],
+        `../${attribute['type'].toLowerCase()}`,
         template
       );
+      if(attribute['rest'].includes('embed')){
+        notEmbeded = '';
+      }
       return (
         '  ' +
         attribute['name'] +
         ': ' +
         isArray +
-        'Types.ObjectId | I' +
-        attribute['type'].replace('[]', '') +
+        notEmbeded +
+        'I' + attribute['type'].replace('[]', '') +
         isArrayClose +
         ';\n'
       );
@@ -101,12 +102,10 @@ function addSchema(model, component) {
     if(attribute['type'] == undefined || attribute['type'] == null){
       continue;
     }
-    console.log(attribute['type'])
     if (attribute['type'].includes('[]') || attribute['rest'].includes('>')) {
       isArray = '[';
       isArrayClose = ']';
     }
-    console.log(isArray)
     switch (attribute['type']) {
       case 'ObjectId': {
         break;
@@ -138,6 +137,21 @@ function addSchema(model, component) {
         break;
       }
       default: {
+        if(attribute['rest'].includes('embed')){
+          template = addImport(
+             attribute['type'].toLowerCase()+'Schema',
+            `../${attribute['type']
+              .toLowerCase()}`,
+            template
+          );
+          S =
+            S +
+            `
+    ${attribute['name']}: ${isArray}${attribute['type']
+              .replace('[]', '')
+              .toLowerCase()}Schema${isArrayClose},`;
+          break;
+        }
         S =
           S +
           `

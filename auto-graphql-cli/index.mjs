@@ -14,10 +14,12 @@ try {
 
   let component = input.shift().split(' ')[1];
 
-  for (let i = 0; i < input.length; i++) {
+  for (let i = 0; i < input.length-1; i++) {
     let line = input[i].trim().split(' ')
-    if(line.length >= 3){{
-      let attribute = {
+    let attribute
+
+    if(line.length >= 3){
+      attribute = {
         name: line.shift().replace(/[^0-9a-z[-]]/gi, ''),
         type: line
           .shift()
@@ -25,12 +27,22 @@ try {
           .replace(/['"]+/g, ''),
         rest: line.join(),
       };
-    model.push(attribute);
+      model.push(attribute);
+    }else if(line.length == 2){
+      attribute = {
+        name: line.shift().replace(/[^0-9a-z[-]]/gi, ''),
+        type: line
+          .shift()
+          .replace(/[^0-9a-z[-]]/gi, '')
+          .replace(/['"]+/g, ''),
+        rest: [],
     }
+    model.push(attribute);
   }
 
+
   }
-  //console.log(model);
+
   const data = {
     component: component,
   };

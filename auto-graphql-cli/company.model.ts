@@ -1,7 +1,7 @@
-import { IAddress } from '../address/address.model';
-import { ISubcategory } from '../subcategory/subcategory.model';
-import { ICategory } from '../category/category.model';
-import { IMultimedia } from '../multimedia/multimedia.model';
+import { addressSchema,  IAddress } from '../address';
+import { ISubcategory } from '../subcategory';
+import { ICategory } from '../category';
+import { multimediaSchema,  IMultimedia } from '../multimedia';
 import { Schema, Document, Types, Model, model, models } from 'mongoose';
 import { composeMongoose } from "graphql-compose-mongoose";
 import slugs from "slugs";
@@ -9,10 +9,15 @@ import mongooseAlgolia from "mongoose-algolia";
 
 export interface ICompany {
   _id: any;
-  logo: Types.ObjectId | IMultimedia;
+  name: string;
+  description: string;
+  logo: IMultimedia;
   category: Types.ObjectId | ICategory;
   subcategory: Array<Types.ObjectId | ISubcategory>;
-  addresses: Array<Types.ObjectId | IAddress>;
+  addresses: Array<IAddress>;
+  active: boolean;
+  createdAt: Date;
+  updatedAt: Date;
 }
 
 export type CompanyDocument = Document<Types.ObjectId, any, ICompany> &
@@ -21,10 +26,15 @@ export type CompanyDocument = Document<Types.ObjectId, any, ICompany> &
 
 const companySchema = new Schema<ICompany>(
   {
-    logo: {
-      type: Schema.Types.ObjectId,
-      ref: 'Multimedia'
+    name: {
+      type: String,
+      trim: true
     },
+    description: {
+      type: String,
+      trim: true
+    },
+    logo: multimediaSchema,
     category: {
       type: Schema.Types.ObjectId,
       ref: 'Category'
@@ -33,9 +43,10 @@ const companySchema = new Schema<ICompany>(
       type: Schema.Types.ObjectId,
       ref: 'Subcategory'
     }],
-    addresses: [{
-      type: Schema.Types.ObjectId,
-      ref: 'Address'
+    addresses: [addressSchema],
+    active: [{
+      type: Boolean,
+      default: true
     }],
   },
   { timestamps: true }
@@ -56,6 +67,8 @@ export const Company =
   >('Company', companySchema);
 
 export const CompanyTC = composeMongoose(Company);
+
+
 
 
 

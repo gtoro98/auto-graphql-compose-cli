@@ -1,17 +1,20 @@
 export function addImport(item, path, template) {
-  const statement = `import { ${item} } from '${path.replace('[]', '')}';`;
+  path = path.replace('[]', '');
+  item = item.replace('[]', '');
+  const statement = `import { ${item} } from '${path}';`;
   template = template.split('\n');
 
   for (let element of template) {
-    //console.log(element);
-    if (element.includes('path') && !element.includes('item')) {
-      element = element
-        .split(' ')
-        .splice(element.indexOf('{'), 0, ' ' + item + ', ');
 
-      return unSplitTemplate(
-        template.splice(template.indexOf(element), 1, element)
-      );
+    if (element.includes(path) && !element.includes(item)) {
+      let newElement = '';
+      let splitElement = element.split(' ');
+      const index = splitElement.indexOf('{') + 1;
+
+      splitElement.splice(index, 0,  item + ', ');
+
+      template.splice(template.indexOf(element), 1, splitElement.join(' '));
+      return unSplitTemplate(template);
     }
   }
   template.unshift(statement);
@@ -25,6 +28,5 @@ function unSplitTemplate(template) {
   for (let element of template) {
     newTemplate = newTemplate + element + '\n';
   }
-
   return newTemplate;
 }
